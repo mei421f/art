@@ -1,0 +1,12 @@
+{
+  "name": "artosphere",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Artosphere Branding — creative studio portfolio site",
+  "scripts": {
+    "install": "npm install --prefix backend",
+    "start": "npm start --prefix backend",
+    "seed": "npm run seed --prefix backend"
+  },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#1c1c1c"/>
+  <polygon points="400,120 620,300 400,480 180,300" fill="none" stroke="#c4432c" stroke-width="1.5" opacity="0.7"/>
+  <polygon points="400,190 540,300 400,410 260,300" fill="#c4432c" opacity="0.25"/>
+  <text x="400" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="30" letter-spacing="6" fill="#f4f2ee">KOVA</text>
+  <text x="400" y="560" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" letter-spacing="3" fill="#c4432c">PLACEHOLDER COVER — REPLACE WITH FINAL ARTWORK</text>
+</svg>
