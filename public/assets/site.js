@@ -64,7 +64,7 @@
     });
     // اگر با تغییر اندازه صفحه از حالت موبایل خارج شدیم، منو را ببند
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 780 && mainNav.classList.contains('is-open')) closeNav();
+      if (window.innerWidth > 900 && mainNav.classList.contains('is-open')) closeNav();
     });
   }
 
