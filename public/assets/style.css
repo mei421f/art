@@ -800,27 +800,29 @@ section[id], #top { scroll-margin-top: var(--header-h); }
 /* ============ MOBILE NAV ============ */
 @media (max-width: 900px) {
   .nav-toggle { display: flex; }
+  .nav-backdrop { display: none; }
   .main-nav {
     position: fixed;
     left: 0;
-    top: 0;
-    height: 100svh;
-    width: min(84vw, 340px);
+    right: 0;
+    top: var(--header-h);
+    height: calc(100svh - var(--header-h));
+    width: 100%;
     background: var(--color-bg);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 16px;
     padding-inline: var(--gutter);
-    transform: translateX(-100%);
+    padding-block: 24px;
+    overflow-y: auto;
+    transform: translateY(-100%);
     transition: transform var(--dur-mid) var(--ease);
-    border-inline-end: 1px solid var(--color-line);
-    box-shadow: var(--shadow-lg);
-    z-index: 350;
+    z-index: 250;
   }
-  .main-nav.is-open { transform: translateX(0); }
-  .main-nav a { font-size: 19px; padding: 10px 22px; }
-  .main-nav-cta { margin-inline-start: 0; margin-top: 10px; }
+  .main-nav.is-open { transform: translateY(0); }
+  .main-nav a { font-size: 20px; padding: 12px 22px; }
+  .main-nav-cta { margin-inline-start: 0; margin-top: 14px; }
 }
 
 @media (min-width: 901px) {
