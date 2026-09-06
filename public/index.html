@@ -6,6 +6,11 @@
 <title>Artosphere Branding — کوروش آرزومند</title>
 <meta name="description" content="Artosphere Branding — استودیوی برندینگ و طراحی گرافیک کوروش آرزومند. Brand identity, logo, packaging, motion & creative direction." />
 <link rel="icon" href="data:," />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
 <link rel="preload" as="font" href="/assets/fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="/assets/style.css" />
 </head>
@@ -18,6 +23,7 @@
 <header class="site-header" id="top">
   <div class="row header-row">
     <a href="#top" class="logo-mark" aria-label="Artosphere">
+      <span class="logo-box">A</span>
       <span class="logo-word">ARTOSPHERE</span>
     </a>
 
@@ -26,7 +32,9 @@
       <a href="#services" data-fa="خدمات"    data-en="Services">خدمات</a>
       <a href="#about"   data-fa="درباره"    data-en="About">درباره</a>
       <a href="#process" data-fa="فرآیند"    data-en="Process">فرآیند</a>
+      <a href="#team"    data-fa="تیم"       data-en="Team">تیم</a>
       <a href="#contact" data-fa="تماس"      data-en="Contact">تماس</a>
+      <a href="#contact" class="main-nav-cta" data-fa="شروع پروژه" data-en="Start a project">شروع پروژه</a>
     </nav>
 
     <div class="header-controls">
@@ -49,6 +57,7 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="row hero-row">
+      <p class="hero-tag" aria-hidden="true">ARTOSPHERE_STUDIO/ BRAND_2026/ IDENTITY/ 00:00:00:00</p>
       <p class="hero-eyebrow" data-fa="استودیوی برندینگ و طراحی خلاق" data-en="Branding &amp; creative design studio">استودیوی برندینگ و طراحی خلاق</p>
       <h1 class="hero-title">
         <span class="reveal-line"><span data-fa="اتمسفری که در آن" data-en="An atmosphere where">اتمسفری که در آن</span></span>
@@ -56,21 +65,26 @@
         <span class="reveal-line"><span data-fa="بصری تبدیل می‌شوند." data-en="visual experiences.">بصری تبدیل می‌شوند.</span></span>
       </h1>
 
+      <p class="hero-desc" data-fa="کوروش آرزومند — گرافیک دیزاینر، آرت دایرکتور و دانشجوی چندرسانه‌ای. Artosphere برند شخصی و استودیوی خلاق اوست." data-en="Kourosh Arezoumand — graphic designer, art director and multimedia student. Artosphere is his personal brand and creative studio.">
+        کوروش آرزومند — گرافیک دیزاینر، آرت دایرکتور و دانشجوی چندرسانه‌ای. Artosphere برند شخصی و استودیوی خلاق اوست.
+      </p>
+
       <div class="hero-foot">
-        <p class="hero-desc" data-fa="کوروش آرزومند — گرافیک دیزاینر، آرت دایرکتور و دانشجوی چندرسانه‌ای. Artosphere برند شخصی و استودیوی خلاق اوست." data-en="Kourosh Arezoumand — graphic designer, art director and multimedia student. Artosphere is his personal brand and creative studio.">
-          کوروش آرزومند — گرافیک دیزاینر، آرت دایرکتور و دانشجوی چندرسانه‌ای. Artosphere برند شخصی و استودیوی خلاق اوست.
-        </p>
-        <a href="#work" class="hero-cta" data-fa="دیدن کارها" data-en="View the work">دیدن کارها</a>
+        <a href="#work" class="hero-cta hero-cta-primary" data-fa="مشاهده کارها" data-en="View the work">مشاهده کارها</a>
+        <a href="#contact" class="hero-cta hero-cta-ghost" data-fa="شروع پروژه" data-en="Start a project">شروع پروژه</a>
       </div>
     </div>
-    <div class="hero-scroll-hint" aria-hidden="true"><span></span></div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span class="hero-scroll-line"><span></span></span>
+      <span class="hero-scroll-label">SCROLL</span>
+    </div>
   </section>
 
   <!-- WORK -->
   <section class="section work" id="work">
     <div class="row section-head">
+      <p class="section-note" data-fa="// پروژه‌های فعلی" data-en="// Current projects">// پروژه‌های فعلی</p>
       <h2 data-fa="کارها" data-en="Work">کارها</h2>
-      <p class="section-note" data-fa="پروژه‌های فعلی" data-en="Current projects">پروژه‌های فعلی</p>
     </div>
 
     <div class="row">
@@ -84,33 +98,39 @@
   <!-- SERVICES -->
   <section class="section services" id="services">
     <div class="row section-head">
-      <h2 data-fa="خدمات" data-en="Services">خدمات</h2>
       <p class="section-note" data-fa="چه کارهایی انجام می‌دهیم" data-en="What we do">چه کارهایی انجام می‌دهیم</p>
+      <h2 data-fa="خدمات" data-en="Services">خدمات</h2>
     </div>
 
     <div class="row">
       <ul class="service-list">
         <li class="service-item">
+          <span class="service-badge" aria-hidden="true">Br</span>
           <span class="service-name" data-fa="برندینگ و هویت بصری" data-en="Branding &amp; Brand Identity">برندینگ و هویت بصری</span>
           <span class="service-desc" data-fa="ساخت هویتی منسجم از استراتژی تا اجرای بصری." data-en="Building a coherent identity from strategy to visual execution.">ساخت هویتی منسجم از استراتژی تا اجرای بصری.</span>
         </li>
         <li class="service-item">
+          <span class="service-badge" aria-hidden="true">Lo</span>
           <span class="service-name" data-fa="طراحی لوگو" data-en="Logo Design">طراحی لوگو</span>
           <span class="service-desc" data-fa="نشانه‌هایی ساده، به‌یادماندنی و ماندگار." data-en="Simple, memorable, lasting marks.">نشانه‌هایی ساده، به‌یادماندنی و ماندگار.</span>
         </li>
         <li class="service-item">
+          <span class="service-badge" aria-hidden="true">Pk</span>
           <span class="service-name" data-fa="طراحی بسته‌بندی" data-en="Packaging Design">طراحی بسته‌بندی</span>
           <span class="service-desc" data-fa="بسته‌بندی‌ای که برند را روی قفسه زنده می‌کند." data-en="Packaging that brings the brand to life on the shelf.">بسته‌بندی‌ای که برند را روی قفسه زنده می‌کند.</span>
         </li>
         <li class="service-item">
+          <span class="service-badge" aria-hidden="true">Mo</span>
           <span class="service-name" data-fa="موشن دیزاین" data-en="Motion Design">موشن دیزاین</span>
           <span class="service-desc" data-fa="حرکت‌بخشیدن به برند برای صفحه‌نمایش." data-en="Bringing the brand to motion for the screen.">حرکت‌بخشیدن به برند برای صفحه‌نمایش.</span>
         </li>
         <li class="service-item">
+          <span class="service-badge" aria-hidden="true">Sm</span>
           <span class="service-name" data-fa="طراحی شبکه‌های اجتماعی" data-en="Social Media Design">طراحی شبکه‌های اجتماعی</span>
           <span class="service-desc" data-fa="حضوری بصری و منسجم در پلتفرم‌های اجتماعی." data-en="A consistent visual presence across social platforms.">حضوری بصری و منسجم در پلتفرم‌های اجتماعی.</span>
         </li>
         <li class="service-item">
+          <span class="service-badge" aria-hidden="true">Cd</span>
           <span class="service-name" data-fa="کریتیو دایرکشن" data-en="Creative Direction">کریتیو دایرکشن</span>
           <span class="service-desc" data-fa="جهت‌دهی خلاقانه به پروژه از ایده تا اجرا." data-en="Creative direction from idea through execution.">جهت‌دهی خلاقانه به پروژه از ایده تا اجرا.</span>
         </li>
@@ -133,11 +153,11 @@
 
       <div class="about-tools">
         <h3 data-fa="ابزارها" data-en="Tools">ابزارها</h3>
-        <ul class="tools-list">
-          <li>Adobe Photoshop</li>
-          <li>Adobe Illustrator</li>
-          <li>Adobe After Effects</li>
-          <li>Adobe Premiere Pro</li>
+        <ul class="tools-grid">
+          <li><span class="tool-badge">Ps</span><span data-fa="Adobe Photoshop" data-en="Adobe Photoshop">Adobe Photoshop</span></li>
+          <li><span class="tool-badge">Ai</span><span data-fa="Adobe Illustrator" data-en="Adobe Illustrator">Adobe Illustrator</span></li>
+          <li><span class="tool-badge">Ae</span><span data-fa="Adobe After Effects" data-en="Adobe After Effects">Adobe After Effects</span></li>
+          <li><span class="tool-badge">Pr</span><span data-fa="Adobe Premiere Pro" data-en="Adobe Premiere Pro">Adobe Premiere Pro</span></li>
         </ul>
       </div>
     </div>
@@ -146,8 +166,8 @@
   <!-- PROCESS -->
   <section class="section process" id="process">
     <div class="row section-head">
-      <h2 data-fa="فرآیند" data-en="Process">فرآیند</h2>
       <p class="section-note" data-fa="چطور کار می‌کنیم" data-en="How we work">چطور کار می‌کنیم</p>
+      <h2 data-fa="فرآیند" data-en="Process">فرآیند</h2>
     </div>
 
     <div class="row">
@@ -184,13 +204,32 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- TEAM -->
+  <section class="section team" id="team">
+    <div class="row section-head">
+      <p class="section-note" data-fa="پشت صحنه" data-en="Behind the scenes">پشت صحنه</p>
+      <h2 data-fa="تیم ما" data-en="Our team">تیم ما</h2>
+    </div>
+
+    <div class="row">
+      <div class="team-list">
+        <div class="team-card">
+          <span class="team-avatar" aria-hidden="true">کآ</span>
+          <h3 class="team-name" data-fa="کوروش آرزومند" data-en="Kourosh Arezoumand">کوروش آرزومند</h3>
+          <p class="team-role" data-fa="آرت دایرکتور و گرافیک دیزاینر" data-en="Art Director &amp; Graphic Designer">آرت دایرکتور و گرافیک دیزاینر</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT / ORDER -->
   <section class="section contact" id="contact">
     <div class="row contact-grid">
       <div class="contact-intro">
+        <p class="section-note" data-fa="ثبت سفارش" data-en="Start a project">ثبت سفارش</p>
         <h2 data-fa="بیایید بسازیم" data-en="Let's build something">بیایید بسازیم</h2>
-        <p data-fa="برای پروژه بعدی برند خود آماده‌اید؟ کمی درباره‌اش بنویسید." data-en="Ready for your next brand project? Tell me a bit about it.">
-          برای پروژه بعدی برند خود آماده‌اید؟ کمی درباره‌اش بنویسید.
+        <p data-fa="فرم زیر را پر کنید تا جزئیات پروژه‌تان مستقیم برای من ارسال شود." data-en="Fill in the form below and your project details will be sent to me directly.">
+          فرم زیر را پر کنید تا جزئیات پروژه‌تان مستقیم برای من ارسال شود.
         </p>
         <a class="contact-email" href="mailto:hello@artospherebranding.ir">hello@artospherebranding.ir</a>
       </div>
@@ -205,15 +244,19 @@
           <input id="cf-email" name="email" type="email" required autocomplete="email" />
         </div>
         <div class="form-row">
+          <label for="cf-service" data-fa="نوع خدمت مورد نیاز" data-en="Service needed">نوع خدمت مورد نیاز</label>
+          <select id="cf-service" name="service"></select>
+        </div>
+        <div class="form-row">
           <label for="cf-budget" data-fa="بودجه تقریبی (اختیاری)" data-en="Approximate budget (optional)">بودجه تقریبی (اختیاری)</label>
           <input id="cf-budget" name="budget" type="text" />
         </div>
         <div class="form-row">
-          <label for="cf-message" data-fa="پیام" data-en="Message">پیام</label>
+          <label for="cf-message" data-fa="توضیح پروژه" data-en="Project description">توضیح پروژه</label>
           <textarea id="cf-message" name="message" rows="4" required></textarea>
         </div>
 
-        <button type="submit" class="form-submit" data-fa="ارسال پیام" data-en="Send message">ارسال پیام</button>
+        <button type="submit" class="form-submit" data-fa="ارسال سفارش" data-en="Send request">ارسال سفارش</button>
         <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -224,6 +267,7 @@
 <footer class="site-footer">
   <div class="row footer-row">
     <span class="footer-mark">ARTOSPHERE</span>
+    <a class="footer-contact" href="mailto:hello@artospherebranding.ir">hello@artospherebranding.ir</a>
     <span class="footer-copy" data-fa="© 2026 Artosphere Branding — کوروش آرزومند" data-en="© 2026 Artosphere Branding — Kourosh Arezoumand">© 2026 Artosphere Branding — کوروش آرزومند</span>
     <a href="#top" class="footer-top" data-fa="بازگشت به بالا" data-en="Back to top">بازگشت به بالا</a>
   </div>

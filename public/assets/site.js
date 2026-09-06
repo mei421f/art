@@ -5,6 +5,27 @@
   var html = document.documentElement;
 
   /* ---------------- زبان / جهت ---------------- */
+  var SERVICE_OPTIONS = [
+    { value: 'branding', fa: 'برندینگ و هویت بصری', en: 'Branding & Brand Identity' },
+    { value: 'logo', fa: 'طراحی لوگو', en: 'Logo Design' },
+    { value: 'packaging', fa: 'طراحی بسته‌بندی', en: 'Packaging Design' },
+    { value: 'motion', fa: 'موشن دیزاین', en: 'Motion Design' },
+    { value: 'social', fa: 'طراحی شبکه‌های اجتماعی', en: 'Social Media Design' },
+    { value: 'direction', fa: 'کریتیو دایرکشن', en: 'Creative Direction' },
+    { value: 'other', fa: 'سایر', en: 'Other' },
+  ];
+
+  function renderServiceOptions(locale) {
+    var select = document.getElementById('cf-service');
+    if (!select) return;
+    var prevValue = select.value;
+    select.innerHTML = SERVICE_OPTIONS.map(function (opt) {
+      var label = locale === 'en' ? opt.en : opt.fa;
+      return '<option value="' + opt.value + '">' + label + '</option>';
+    }).join('');
+    if (prevValue) select.value = prevValue;
+  }
+
   function applyLocale(locale) {
     var dir = locale === 'en' ? 'ltr' : 'rtl';
     html.setAttribute('data-locale', locale);
@@ -15,6 +36,7 @@
       locale === 'en'
         ? 'Artosphere Branding — Kourosh Arezoumand'
         : 'Artosphere Branding — کوروش آرزومند';
+    renderServiceOptions(locale);
   }
 
   function initLocale() {
@@ -204,15 +226,25 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var submitBtn = form.querySelector('.form-submit');
+      var locale = html.getAttribute('data-locale');
+      var serviceSelect = document.getElementById('cf-service');
+      var serviceLabel = serviceSelect && serviceSelect.selectedOptions.length
+        ? serviceSelect.selectedOptions[0].textContent
+        : '';
+      var rawMessage = form.message.value.trim();
+      var messageWithService = serviceLabel
+        ? '[' + serviceLabel + '] ' + rawMessage
+        : rawMessage;
+
       var data = {
         name: form.name.value.trim(),
         email: form.email.value.trim(),
         budget: form.budget.value.trim(),
-        message: form.message.value.trim(),
-        locale: html.getAttribute('data-locale'),
+        message: messageWithService,
+        locale: locale,
       };
 
-      if (!data.name || !data.email || !data.message) {
+      if (!data.name || !data.email || !rawMessage) {
         setStatus('error', 'لطفاً همه فیلدهای الزامی را پر کنید.', 'Please fill in all required fields.');
         return;
       }
