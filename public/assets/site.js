@@ -46,16 +46,35 @@
   /* ---------------- منوی موبایل ---------------- */
   var navToggle = document.getElementById('navToggle');
   var mainNav = document.getElementById('mainNav');
+  var navBackdrop = document.getElementById('navBackdrop');
+
+  function openNav() {
+    mainNav.classList.add('is-open');
+    if (navBackdrop) navBackdrop.classList.add('is-open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('no-scroll');
+  }
+  function closeNav() {
+    mainNav.classList.remove('is-open');
+    if (navBackdrop) navBackdrop.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('no-scroll');
+  }
   if (navToggle && mainNav) {
     navToggle.addEventListener('click', function () {
-      var isOpen = mainNav.classList.toggle('is-open');
-      navToggle.setAttribute('aria-expanded', String(isOpen));
+      var isOpen = mainNav.classList.contains('is-open');
+      if (isOpen) { closeNav(); } else { openNav(); }
     });
     mainNav.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        mainNav.classList.remove('is-open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      });
+      a.addEventListener('click', closeNav);
+    });
+    if (navBackdrop) navBackdrop.addEventListener('click', closeNav);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && mainNav.classList.contains('is-open')) closeNav();
+    });
+    // اگر با تغییر اندازه صفحه از حالت موبایل خارج شدیم، منو را ببند
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 780 && mainNav.classList.contains('is-open')) closeNav();
     });
   }
 
@@ -129,6 +148,28 @@
       .join('');
   }
 
+  // نمونه پروژه‌ها به‌عنوان جایگزین، برای زمانی که بک‌اند/دیتابیس در دسترس نیست
+  var FALLBACK_PROJECTS = [
+    {
+      slug: 'rova',
+      title_fa: 'روا — برندینگ عطر', title_en: 'ROVA — Perfume Branding',
+      category_fa: 'برندینگ / بسته‌بندی', category_en: 'Branding / Packaging',
+      year: '2024',
+      summary_fa: 'هویت بصری و بسته‌بندی برای یک برند عطر مینیمال.',
+      summary_en: 'Visual identity and packaging for a minimal perfume brand.',
+      cover_image: '/assets/images/rova-cover.svg',
+    },
+    {
+      slug: 'kova',
+      title_fa: 'کووا — برندینگ مکمل ورزشی', title_en: 'KOVA — Sports Nutrition Branding',
+      category_fa: 'برندینگ / هویت بصری', category_en: 'Branding / Identity',
+      year: '2024',
+      summary_fa: 'هویت بصری پرانرژی برای برند مکمل‌های ورزشی کووا.',
+      summary_en: 'A high-energy visual identity for the KOVA sports nutrition brand.',
+      cover_image: '/assets/images/kova-cover.svg',
+    },
+  ];
+
   function loadProjects() {
     var container = document.getElementById('workList');
     fetch('/api/projects')
@@ -136,12 +177,12 @@
         if (!res.ok) throw new Error('bad response');
         return res.json();
       })
-      .then(renderProjects)
+      .then(function (list) {
+        renderProjects(list && list.length ? list : FALLBACK_PROJECTS);
+      })
       .catch(function () {
-        if (container) {
-          container.innerHTML =
-            '<p class="work-empty" data-fa="در حال حاضر امکان بارگذاری پروژه‌ها نیست." data-en="Projects can\'t be loaded right now.">در حال حاضر امکان بارگذاری پروژه‌ها نیست.</p>';
-        }
+        // بک‌اند در دسترس نیست؛ به‌جای خالی گذاشتن بخش کارها، نمونه‌کارها را نمایش بده
+        renderProjects(FALLBACK_PROJECTS);
       });
   }
 
