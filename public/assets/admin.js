@@ -124,8 +124,8 @@
           .map(function (p) {
             return (
               '<tr>' +
-              '<td>' + p.title_fa + '<br><small style="color:var(--color-muted)">' + p.title_en + '</small></td>' +
-              '<td>' + p.slug + '</td>' +
+              '<td>' + escapeHtml(p.title_fa) + '<br><small style="color:var(--color-muted)">' + escapeHtml(p.title_en) + '</small></td>' +
+              '<td>' + escapeHtml(p.slug) + '</td>' +
               '<td>' + (p.is_published ? 'منتشرشده' : 'پیش‌نویس') + '</td>' +
               '<td class="row-actions">' +
                 '<button data-action="edit" data-id="' + p.id + '">ویرایش</button>' +
