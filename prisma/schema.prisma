@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Case studies shown on the Work page.
+// Seeded with ROVA / KOVA, add more later directly in the database.
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  order       Int      @default(0)
+  titleFa     String
+  titleEn     String
+  taglineFa   String
+  taglineEn   String
+  descriptionFa String
+  descriptionEn String
+  category    String // e.g. "Branding", "Packaging"
+  year        String
+  coverImage  String? // URL, left empty until real project images are added
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Messages submitted through the Contact page form.
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  budget    String?
+  message   String
+  locale    String   @default("fa")
+  createdAt DateTime @default(now())
+}
