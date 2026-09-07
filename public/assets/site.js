@@ -352,6 +352,7 @@
     var ctx = starCanvas.getContext('2d');
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var stars = [];
+    var shooters = [];
     var W = 0, H = 0;
 
     function sizeCanvas() {
@@ -364,35 +365,83 @@
     }
 
     function makeStars() {
-      var count = Math.round((W * H) / 9000);
-      count = Math.max(60, Math.min(count, 160));
+      var count = Math.round((W * H) / 4200);
+      count = Math.max(120, Math.min(count, 340));
       stars = [];
       for (var i = 0; i < count; i++) {
+        var big = Math.random() < 0.12;
         stars.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          r: Math.random() * 1.3 + 0.3,
-          baseAlpha: Math.random() * 0.5 + 0.3,
+          r: big ? (Math.random() * 1.6 + 1.4) : (Math.random() * 1.1 + 0.35),
+          glow: big,
+          baseAlpha: Math.random() * 0.45 + 0.4,
           phase: Math.random() * Math.PI * 2,
-          speed: Math.random() * 0.15 + 0.03,
-          drift: (Math.random() - 0.5) * 0.06,
+          speed: Math.random() * 0.22 + 0.05,
+          drift: (Math.random() - 0.5) * 0.08,
         });
       }
     }
 
+    function spawnShooter() {
+      var startX = Math.random() * W * 0.7;
+      var startY = Math.random() * H * 0.35;
+      var angle = (Math.random() * 18 + 24) * (Math.PI / 180);
+      var speed = Math.random() * 9 + 11;
+      shooters.push({
+        x: startX, y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 0,
+        maxLife: 42 + Math.random() * 18,
+      });
+    }
+
     function drawFrame(t) {
       ctx.clearRect(0, 0, W, H);
+
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i];
-        var tw = prefersReducedMotion ? s.baseAlpha : s.baseAlpha + Math.sin(t * 0.001 * s.speed + s.phase) * 0.3;
+        var tw = prefersReducedMotion ? s.baseAlpha : s.baseAlpha + Math.sin(t * 0.001 * s.speed + s.phase) * 0.35;
+        tw = Math.max(0, Math.min(1, tw));
+        if (s.glow) {
+          var grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 5.5);
+          grd.addColorStop(0, 'rgba(217, 182, 115,' + (tw * 0.55) + ')');
+          grd.addColorStop(1, 'rgba(217, 182, 115, 0)');
+          ctx.beginPath();
+          ctx.fillStyle = grd;
+          ctx.arc(s.x, s.y, s.r * 5.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(243, 239, 227,' + Math.max(0, Math.min(1, tw)) + ')';
+        ctx.fillStyle = 'rgba(247, 243, 232,' + tw + ')';
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
         if (!prefersReducedMotion) {
           s.y += s.drift;
           if (s.y < -4) s.y = H + 4;
           if (s.y > H + 4) s.y = -4;
+        }
+      }
+
+      if (!prefersReducedMotion) {
+        if (Math.random() < 0.012 && shooters.length < 2) spawnShooter();
+        for (var j = shooters.length - 1; j >= 0; j--) {
+          var sh = shooters[j];
+          sh.x += sh.vx; sh.y += sh.vy; sh.life++;
+          var fade = 1 - sh.life / sh.maxLife;
+          if (fade <= 0) { shooters.splice(j, 1); continue; }
+          var tailX = sh.x - sh.vx * 6;
+          var tailY = sh.y - sh.vy * 6;
+          var trail = ctx.createLinearGradient(sh.x, sh.y, tailX, tailY);
+          trail.addColorStop(0, 'rgba(247, 243, 232,' + fade + ')');
+          trail.addColorStop(1, 'rgba(217, 182, 115, 0)');
+          ctx.strokeStyle = trail;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath();
+          ctx.moveTo(sh.x, sh.y);
+          ctx.lineTo(tailX, tailY);
+          ctx.stroke();
         }
       }
     }
