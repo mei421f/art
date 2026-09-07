@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Artosphere Branding — کوروش آرزومند</title>
 <meta name="description" content="Artosphere Branding — استودیوی برندینگ و طراحی گرافیک کوروش آرزومند. برندینگ، طراحی لوگو، بسته‌بندی، موشن دیزاین و کریتیو دایرکشن." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2314141a'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='700' font-size='34' fill='%23ffffff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,6 +16,9 @@
 </head>
 <body>
 
+<canvas id="starfield" aria-hidden="true"></canvas>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 <div class="noise-overlay" aria-hidden="true"></div>
 
 <a class="skip-link" href="#main">برو به محتوای اصلی</a>
@@ -23,7 +26,7 @@
 <header class="site-header" id="top">
   <div class="row header-row">
     <a href="#top" class="logo-mark" aria-label="Artosphere">
-      <span class="logo-box">A</span>
+      <img src="/assets/logo-icon.png" alt="" class="logo-box" width="40" height="36" />
       <span class="logo-word">ARTOSPHERE</span>
     </a>
 
@@ -33,6 +36,7 @@
       <a href="#about">درباره</a>
       <a href="#process">فرآیند</a>
       <a href="#team">تیم</a>
+      <a href="#channels">ارتباط</a>
       <a href="#contact">تماس</a>
       <a href="#contact" class="main-nav-cta">شروع پروژه</a>
     </nav>
@@ -72,6 +76,28 @@
     <div class="hero-scroll-hint" aria-hidden="true">
       <span class="hero-scroll-line"><span></span></span>
       <span class="hero-scroll-label">SCROLL</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" id="stats" aria-label="آمار">
+    <div class="row stats-row">
+      <div class="stat-item">
+        <span class="stat-number" data-count-to="6">0</span><span class="stat-suffix">+</span>
+        <p class="stat-label">سال تجربه</p>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count-to="40">0</span><span class="stat-suffix">+</span>
+        <p class="stat-label">پروژه انجام‌شده</p>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count-to="25">0</span><span class="stat-suffix">+</span>
+        <p class="stat-label">برند ساخته‌شده</p>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count-to="100">0</span><span class="stat-suffix">٪</span>
+        <p class="stat-label">رضایت مشتری</p>
+      </div>
     </div>
   </section>
 
@@ -217,6 +243,52 @@
     </div>
   </section>
 
+  <!-- CHANNELS -->
+  <section class="section channels" id="channels">
+    <div class="row section-head">
+      <p class="section-note">در دسترس باشید</p>
+      <h2>راه‌های ارتباطی</h2>
+    </div>
+
+    <div class="row">
+      <ul class="channel-list">
+        <li class="channel-item">
+          <a class="channel-link" href="https://instagram.com/artosphere.studio" target="_blank" rel="noopener">
+            <span class="channel-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+            </span>
+            <span class="channel-copy">
+              <span class="channel-label">اینستاگرام</span>
+              <span class="channel-value">artosphere.studio@</span>
+            </span>
+          </a>
+        </li>
+        <li class="channel-item">
+          <a class="channel-link" href="tel:+989123456789" dir="ltr">
+            <span class="channel-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6.5 3h3l1.5 5-2.2 1.8a13 13 0 0 0 5.4 5.4L16 13l5 1.5v3a2 2 0 0 1-2.2 2C10.9 19 5 13.1 4.5 5.2A2 2 0 0 1 6.5 3Z"/></svg>
+            </span>
+            <span class="channel-copy">
+              <span class="channel-label">شماره تماس</span>
+              <span class="channel-value" dir="ltr">0912 345 6789</span>
+            </span>
+          </a>
+        </li>
+        <li class="channel-item">
+          <span class="channel-link channel-link-static">
+            <span class="channel-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.3 7-11.5A7 7 0 0 0 5 9.5C5 14.7 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+            </span>
+            <span class="channel-copy">
+              <span class="channel-label">آدرس استودیو</span>
+              <span class="channel-value">تهران، ایران</span>
+            </span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
   <!-- CONTACT / ORDER -->
   <section class="section contact" id="contact">
     <div class="row contact-grid">
@@ -261,12 +333,20 @@
 
 <footer class="site-footer">
   <div class="row footer-row">
-    <span class="footer-mark">ARTOSPHERE</span>
+    <img src="/assets/logo-full.png" alt="Artosphere" class="footer-mark" width="132" height="150" />
     <a class="footer-contact" href="mailto:hello@artospherebranding.ir">hello@artospherebranding.ir</a>
     <span class="footer-copy">© 2026 Artosphere Branding — کوروش آرزومند</span>
     <a href="#top" class="footer-top">بازگشت به بالا</a>
   </div>
 </footer>
+
+<a class="float-bubble" href="https://instagram.com/artosphere.studio" target="_blank" rel="noopener" aria-label="پیام در اینستاگرام">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+</a>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="بازگشت به بالا">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <script src="/assets/site.js" defer></script>
 </body>

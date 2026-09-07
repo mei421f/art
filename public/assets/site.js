@@ -252,4 +252,170 @@
         });
     });
   }
+  /* ---------------- نوار پیشرفت اسکرول ---------------- */
+  var progressBar = document.getElementById('scrollProgress');
+  function updateProgress() {
+    if (!progressBar) return;
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  /* ---------------- بازگشت به بالا ---------------- */
+  var backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    function toggleBackToTop() {
+      backToTop.classList.toggle('is-visible', window.scrollY > 480);
+    }
+    document.addEventListener('scroll', toggleBackToTop, { passive: true });
+    toggleBackToTop();
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------- شمارنده‌های آماری ---------------- */
+  var statNumbers = document.querySelectorAll('.stat-number');
+  function animateCount(el) {
+    var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+    if (prefersReducedMotion) { el.textContent = target; return; }
+    var start = null;
+    var duration = 1300;
+    function step(ts) {
+      if (start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if ('IntersectionObserver' in window && statNumbers.length) {
+    var statIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          statIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    statNumbers.forEach(function (el) { statIo.observe(el); });
+  } else {
+    statNumbers.forEach(function (el) { el.textContent = el.getAttribute('data-count-to'); });
+  }
+
+  /* ---------------- افکت کج‌شدگی سه‌بعدی روی کارت پروژه‌ها ---------------- */
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (canHover && !prefersReducedMotion) {
+    document.addEventListener('mousemove', function (e) {
+      var card = e.target.closest ? e.target.closest('.work-item') : null;
+      if (!card) return;
+      var rect = card.getBoundingClientRect();
+      var relX = (e.clientX - rect.left) / rect.width - 0.5;
+      var relY = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform =
+        'translateY(-6px) rotateX(' + (relY * -8) + 'deg) rotateY(' + (relX * 10) + 'deg)';
+    }, { passive: true });
+    document.addEventListener('mouseleave', function (e) {
+      var card = e.target.closest ? e.target.closest('.work-item') : null;
+      if (card) card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+    }, true);
+  }
+
+  /* ---------------- هاله‌ی نور دنبال‌کننده‌ی نشانگر ---------------- */
+  var cursorGlow = document.getElementById('cursorGlow');
+  if (cursorGlow && canHover && !prefersReducedMotion) {
+    var glowX = 0, glowY = 0, curX = 0, curY = 0, glowActive = false;
+    document.addEventListener('mousemove', function (e) {
+      glowX = e.clientX; glowY = e.clientY;
+      if (!glowActive) { glowActive = true; cursorGlow.classList.add('is-active'); }
+    }, { passive: true });
+    document.addEventListener('mouseleave', function () {
+      glowActive = false; cursorGlow.classList.remove('is-active');
+    });
+    (function raf() {
+      curX += (glowX - curX) * 0.12;
+      curY += (glowY - curY) * 0.12;
+      cursorGlow.style.transform = 'translate3d(' + curX + 'px,' + curY + 'px,0)';
+      requestAnimationFrame(raf);
+    })();
+  }
+
+  /* ---------------- کهکشان پس‌زمینه (کانواس) ---------------- */
+  var starCanvas = document.getElementById('starfield');
+  if (starCanvas && starCanvas.getContext) {
+    var ctx = starCanvas.getContext('2d');
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var stars = [];
+    var W = 0, H = 0;
+
+    function sizeCanvas() {
+      W = window.innerWidth; H = window.innerHeight;
+      starCanvas.width = W * dpr;
+      starCanvas.height = H * dpr;
+      starCanvas.style.width = W + 'px';
+      starCanvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function makeStars() {
+      var count = Math.round((W * H) / 9000);
+      count = Math.max(60, Math.min(count, 160));
+      stars = [];
+      for (var i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.3 + 0.3,
+          baseAlpha: Math.random() * 0.5 + 0.3,
+          phase: Math.random() * Math.PI * 2,
+          speed: Math.random() * 0.15 + 0.03,
+          drift: (Math.random() - 0.5) * 0.06,
+        });
+      }
+    }
+
+    function drawFrame(t) {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        var tw = prefersReducedMotion ? s.baseAlpha : s.baseAlpha + Math.sin(t * 0.001 * s.speed + s.phase) * 0.3;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(243, 239, 227,' + Math.max(0, Math.min(1, tw)) + ')';
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+        if (!prefersReducedMotion) {
+          s.y += s.drift;
+          if (s.y < -4) s.y = H + 4;
+          if (s.y > H + 4) s.y = -4;
+        }
+      }
+    }
+
+    sizeCanvas();
+    makeStars();
+    drawFrame(0);
+
+    if (!prefersReducedMotion) {
+      (function loop(t) {
+        drawFrame(t);
+        requestAnimationFrame(loop);
+      })(0);
+    }
+
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        sizeCanvas();
+        makeStars();
+        drawFrame(0);
+      }, 150);
+    });
+  }
 })();
