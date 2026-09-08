@@ -385,16 +385,39 @@
 
   document.getElementById('pickFromLibraryBtn').addEventListener('click', function () {
     libraryModalOverlay.hidden = false;
-    renderMediaGrid(libraryGrid, state.media, {
-      selectable: true,
-      onSelect: function (item) {
-        document.getElementById('pf-cover').value = item.url;
-        document.getElementById('pf-cover-type').value = item.media_type;
-        updateCoverPreview();
-        libraryModalOverlay.hidden = true;
-      },
-    });
-    libraryEmpty.hidden = state.media.length > 0;
+    libraryGrid.innerHTML = '';
+    libraryEmpty.hidden = true;
+    libraryGrid.innerHTML = '<p class="modal-loading">در حال بارگذاری…</p>';
+
+    authJson('/api/uploads')
+      .then(function (list) {
+        state.media = list || [];
+        libraryGrid.innerHTML = '';
+        if (!state.media.length) {
+          libraryEmpty.hidden = false;
+          return;
+        }
+        try {
+          renderMediaGrid(libraryGrid, state.media, {
+            selectable: true,
+            onSelect: function (item) {
+              document.getElementById('pf-cover').value = item.url;
+              document.getElementById('pf-cover-type').value = item.media_type;
+              updateCoverPreview();
+              libraryModalOverlay.hidden = true;
+            },
+          });
+        } catch (renderErr) {
+          console.error('خطا در نمایش کتابخانه رسانه:', renderErr);
+          libraryGrid.innerHTML = '';
+          libraryEmpty.hidden = false;
+        }
+      })
+      .catch(function (err) {
+        libraryGrid.innerHTML = '';
+        libraryEmpty.hidden = false;
+        toast(err.message || 'خطا در بارگذاری کتابخانه رسانه.', 'error');
+      });
   });
   document.getElementById('closeLibraryModal').addEventListener('click', function () { libraryModalOverlay.hidden = true; });
   libraryModalOverlay.addEventListener('click', function (e) { if (e.target === libraryModalOverlay) libraryModalOverlay.hidden = true; });
