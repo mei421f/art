@@ -38,5 +38,26 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- نوع رسانه کاور پروژه: image یا video (برای دیتابیس‌های قدیمی‌تر این ستون
+-- با ALTER اضافه می‌شود چون CREATE TABLE IF NOT EXISTS ستون جدید اضافه نمی‌کند)
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS cover_type TEXT NOT NULL DEFAULT 'image';
+
+-- کتابخانه رسانه: هر فایلی که از پنل ادمین آپلود می‌شود (عکس یا ویدیو) اینجا
+-- ثبت می‌شود تا هم قابل استفاده مجدد باشد و هم فهرست آن در پنل دیده شود.
+CREATE TABLE IF NOT EXISTS media (
+  id            SERIAL PRIMARY KEY,
+  filename      TEXT NOT NULL,
+  url           TEXT NOT NULL,
+  media_type    TEXT NOT NULL DEFAULT 'image',
+  mime_type     TEXT NOT NULL DEFAULT '',
+  size_bytes    INTEGER NOT NULL DEFAULT 0,
+  public_id     TEXT,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- برای دیتابیس‌هایی که از قبل جدول media را داشتند (بدون ستون public_id)
+ALTER TABLE media ADD COLUMN IF NOT EXISTS public_id TEXT;
+
 CREATE INDEX IF NOT EXISTS idx_projects_sort ON projects (sort_order);
 CREATE INDEX IF NOT EXISTS idx_messages_created ON messages (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_media_created ON media (created_at DESC);

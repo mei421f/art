@@ -136,10 +136,13 @@
     container.innerHTML = list
       .map(function (p) {
         var catLine = escapeHtml(p.category_fa) + (p.year ? ' — ' + escapeHtml(p.year) : '');
+        var media = p.cover_type === 'video'
+          ? '<video src="' + escapeHtml(p.cover_image) + '" autoplay muted loop playsinline></video>'
+          : '<img src="' + escapeHtml(p.cover_image) + '" alt="' + escapeHtml(p.title_fa) + '" loading="lazy" />';
         return (
           '<a class="work-item" href="#work" data-slug="' + escapeHtml(p.slug) + '">' +
             '<div class="work-media">' +
-              '<img src="' + escapeHtml(p.cover_image) + '" alt="' + escapeHtml(p.title_fa) + '" loading="lazy" />' +
+              media +
             '</div>' +
             '<div class="work-copy">' +
               '<span class="work-cat">' + catLine + '</span>' +

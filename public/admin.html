@@ -2,125 +2,235 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>پنل مدیریت — Artosphere</title>
-<link rel="icon" href="data:," />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="/assets/favicon.png" />
 <link rel="stylesheet" href="/assets/style.css" />
-<style>
-  body { background: var(--color-bg); }
-  .admin-shell { max-width: 980px; margin: 0 auto; padding: 48px 24px 100px; }
-  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-  .admin-header h1 { font-size: 1.4rem; }
-  .admin-logout { font-size: 13px; border-bottom: 1px solid currentColor; }
-  .admin-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--color-line); margin-bottom: 32px; }
-  .admin-tab { padding-bottom: 12px; font-size: 14px; color: var(--color-muted); border-bottom: 2px solid transparent; }
-  .admin-tab.is-active { color: var(--color-ink); border-color: var(--color-ink); }
-  .admin-panel { display: none; }
-  .admin-panel.is-active { display: block; }
-
-  .login-shell { max-width: 380px; margin: 15vh auto; padding: 0 24px; }
-  .login-shell h1 { font-size: 1.6rem; margin-bottom: 28px; }
-  .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-  .field label { font-size: 13px; color: var(--color-muted); font-family: var(--font-mono); }
-  .field input, .field textarea, .field select {
-    background: transparent; border: 1px solid var(--color-line); padding: 10px 12px; font-size: 15px; border-radius: var(--radius);
-  }
-  .btn { display: inline-block; padding: 12px 24px; background: var(--color-ink); color: var(--color-inverse); font-size: 14px; border-radius: var(--radius); }
-  .btn.secondary { background: transparent; color: var(--color-ink); border: 1px solid var(--color-line); }
-  .btn.danger { background: #b3261e; color: #fff; }
-  .error-text { color: #b3261e; font-size: 13px; min-height: 18px; }
-  .ok-text { color: #2e7d32; font-size: 13px; min-height: 18px; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th, td { text-align: start; padding: 10px 8px; border-bottom: 1px solid var(--color-line); vertical-align: top; }
-  th { color: var(--color-muted); font-weight: 400; font-family: var(--font-mono); font-size: 12px; }
-  .row-actions { display: flex; gap: 10px; }
-  .row-actions button { font-size: 13px; border-bottom: 1px solid currentColor; }
-  .unread-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--color-accent); margin-inline-end: 6px; }
-
-  .project-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-  .project-form-grid .field.full { grid-column: 1 / -1; }
-  .new-project-toggle { margin-bottom: 20px; }
-</style>
+<link rel="stylesheet" href="/assets/admin.css" />
 </head>
-<body>
+<body class="admin-body">
 
-<!-- LOGIN -->
-<div class="login-shell" id="loginShell">
-  <h1>ورود به پنل مدیریت</h1>
-  <form id="loginForm">
-    <div class="field">
-      <label for="username">نام کاربری</label>
-      <input id="username" name="username" type="text" autocomplete="username" required />
-    </div>
-    <div class="field">
-      <label for="password">رمز عبور</label>
-      <input id="password" name="password" type="password" autocomplete="current-password" required />
-    </div>
-    <p class="error-text" id="loginError"></p>
-    <button class="btn" type="submit">ورود</button>
-  </form>
+<!-- ===================== ورود ===================== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card reveal is-visible">
+    <img src="/assets/logo-icon.png" alt="Artosphere" class="login-logo" />
+    <h1>ورود به پنل مدیریت</h1>
+    <p class="login-sub">برای مدیریت پروژه‌ها، رسانه‌ها و پیام‌های سایت وارد شوید.</p>
+    <form id="loginForm" class="login-form">
+      <div class="field">
+        <label for="username">نام کاربری</label>
+        <input id="username" name="username" type="text" autocomplete="username" required />
+      </div>
+      <div class="field">
+        <label for="password">رمز عبور</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+      <p class="form-msg error" id="loginError"></p>
+      <button class="btn btn-primary btn-block" type="submit">
+        <span class="btn-label">ورود</span>
+        <span class="spinner" hidden></span>
+      </button>
+    </form>
+  </div>
 </div>
 
-<!-- ADMIN SHELL -->
-<div class="admin-shell" id="adminShell" style="display:none;">
-  <div class="admin-header">
-    <h1>پنل مدیریت Artosphere</h1>
-    <button class="admin-logout" id="logoutBtn">خروج</button>
-  </div>
+<!-- ===================== اپ ادمین ===================== -->
+<div class="admin-app" id="adminApp" hidden>
 
-  <div class="admin-tabs">
-    <button class="admin-tab is-active" data-tab="projects">پروژه‌ها</button>
-    <button class="admin-tab" data-tab="messages">پیام‌ها</button>
-  </div>
+  <!-- نوار بالا (موبایل + دسکتاپ) -->
+  <header class="admin-topbar">
+    <div class="admin-topbar-brand">
+      <img src="/assets/logo-icon.png" alt="" class="admin-topbar-logo" />
+      <span>پنل مدیریت Artosphere</span>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-topbar-link" href="/" target="_blank" rel="noopener">مشاهده سایت ↗</a>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn">خروج</button>
+    </div>
+  </header>
 
-  <!-- PROJECTS -->
-  <section class="admin-panel is-active" id="panel-projects">
-    <div class="new-project-toggle">
-      <button class="btn secondary" id="newProjectBtn">+ پروژه جدید</button>
+  <div class="admin-body-grid">
+    <!-- ناوبری کناری (دسکتاپ) / نوار پایین (موبایل) -->
+    <nav class="admin-nav" aria-label="بخش‌های پنل">
+      <button class="admin-nav-item is-active" data-tab="projects" type="button">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span>پروژه‌ها</span>
+      </button>
+      <button class="admin-nav-item" data-tab="messages" type="button">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 6.5L12 13l8.5-6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>پیام‌ها</span>
+        <span class="nav-badge" id="navUnreadBadge" hidden>0</span>
+      </button>
+      <button class="admin-nav-item" data-tab="media" type="button">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="8.5" r="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M21 15l-5.2-5.2a1.5 1.5 0 00-2.1 0L4 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>رسانه‌ها</span>
+      </button>
+    </nav>
+
+    <main class="admin-main">
+
+      <!-- ===================== پروژه‌ها ===================== -->
+      <section class="admin-panel is-active" id="panel-projects">
+        <div class="panel-head">
+          <div>
+            <h2>پروژه‌ها</h2>
+            <p class="panel-sub" id="projectsSummary">—</p>
+          </div>
+          <button class="btn btn-primary" id="newProjectBtn">
+            <span>+ پروژه جدید</span>
+          </button>
+        </div>
+
+        <div class="stat-chips" id="projectStats"></div>
+
+        <div class="empty-state" id="projectsEmpty" hidden>
+          <p>هنوز پروژه‌ای اضافه نشده. اولین پروژه را بسازید.</p>
+        </div>
+
+        <div class="card-grid" id="projectsGrid"></div>
+      </section>
+
+      <!-- ===================== پیام‌ها ===================== -->
+      <section class="admin-panel" id="panel-messages">
+        <div class="panel-head">
+          <div>
+            <h2>پیام‌ها</h2>
+            <p class="panel-sub" id="messagesSummary">—</p>
+          </div>
+        </div>
+
+        <div class="telegram-banner" id="telegramBanner" hidden></div>
+
+        <div class="empty-state" id="messagesEmpty" hidden>
+          <p>پیامی دریافت نشده است.</p>
+        </div>
+
+        <div class="msg-list" id="messagesList"></div>
+      </section>
+
+      <!-- ===================== رسانه‌ها ===================== -->
+      <section class="admin-panel" id="panel-media">
+        <div class="panel-head">
+          <div>
+            <h2>رسانه‌ها</h2>
+            <p class="panel-sub">فایل‌های آپلودشده (عکس و ویدیو) — برای استفاده در کاور پروژه‌ها</p>
+          </div>
+          <button class="btn btn-primary" id="mediaUploadBtn">
+            <span>+ آپلود فایل</span>
+          </button>
+        </div>
+
+        <div class="empty-state" id="mediaEmpty" hidden>
+          <p>هنوز فایلی آپلود نشده.</p>
+        </div>
+
+        <div class="media-grid" id="mediaGrid"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ===================== مودال فرم پروژه ===================== -->
+<div class="modal-overlay" id="projectModalOverlay" hidden>
+  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+    <div class="modal-head">
+      <h3 id="projectModalTitle">پروژه جدید</h3>
+      <button class="modal-close" id="closeProjectModal" type="button" aria-label="بستن">✕</button>
     </div>
 
-    <form id="projectForm" style="display:none; margin-bottom:40px; border:1px solid var(--color-line); padding:24px; border-radius: var(--radius);">
+    <form id="projectForm" class="modal-body">
       <input type="hidden" id="pf-id" />
-      <div class="project-form-grid">
-        <div class="field"><label>slug (یکتا، انگلیسی)</label><input id="pf-slug" required /></div>
-        <div class="field"><label>سال</label><input id="pf-year" /></div>
-        <div class="field"><label>عنوان (فارسی)</label><input id="pf-title-fa" required /></div>
-        <div class="field"><label>عنوان (انگلیسی)</label><input id="pf-title-en" required /></div>
-        <div class="field"><label>دسته‌بندی (فارسی)</label><input id="pf-cat-fa" /></div>
-        <div class="field"><label>دسته‌بندی (انگلیسی)</label><input id="pf-cat-en" /></div>
-        <div class="field full"><label>خلاصه (فارسی)</label><input id="pf-summary-fa" /></div>
-        <div class="field full"><label>خلاصه (انگلیسی)</label><input id="pf-summary-en" /></div>
-        <div class="field full"><label>توضیح کامل (فارسی)</label><textarea id="pf-desc-fa" rows="3"></textarea></div>
-        <div class="field full"><label>توضیح کامل (انگلیسی)</label><textarea id="pf-desc-en" rows="3"></textarea></div>
-        <div class="field"><label>آدرس تصویر کاور</label><input id="pf-cover" placeholder="/assets/images/example.jpg" /></div>
-        <div class="field"><label>ترتیب نمایش</label><input id="pf-order" type="number" value="0" /></div>
-        <div class="field">
-          <label>وضعیت انتشار</label>
-          <select id="pf-published"><option value="true">منتشرشده</option><option value="false">پیش‌نویس</option></select>
+
+      <div class="form-section">
+        <h4 class="form-section-title">رسانه کاور</h4>
+        <div class="cover-picker">
+          <div class="cover-preview" id="coverPreview">
+            <span class="cover-preview-empty">بدون کاور</span>
+          </div>
+          <div class="cover-actions">
+            <label class="btn btn-secondary btn-sm file-btn">
+              <input type="file" id="coverFileInput" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/quicktime" hidden />
+              <span>انتخاب فایل از دستگاه</span>
+            </label>
+            <button class="btn btn-ghost btn-sm" type="button" id="pickFromLibraryBtn">انتخاب از رسانه‌های قبلی</button>
+            <button class="btn btn-ghost btn-sm" type="button" id="clearCoverBtn">حذف کاور</button>
+          </div>
+          <div class="upload-progress" id="uploadProgress" hidden>
+            <div class="upload-progress-bar" id="uploadProgressBar"></div>
+          </div>
+          <input type="hidden" id="pf-cover" />
+          <input type="hidden" id="pf-cover-type" value="image" />
         </div>
       </div>
-      <p class="error-text" id="projectFormError"></p>
-      <div class="row-actions">
-        <button class="btn" type="submit">ذخیره</button>
-        <button class="btn secondary" type="button" id="cancelProjectBtn">انصراف</button>
+
+      <div class="form-section">
+        <h4 class="form-section-title">اطلاعات پایه</h4>
+        <div class="form-grid">
+          <div class="field"><label>slug (یکتا، انگلیسی)</label><input id="pf-slug" required /></div>
+          <div class="field"><label>سال</label><input id="pf-year" /></div>
+          <div class="field"><label>ترتیب نمایش</label><input id="pf-order" type="number" value="0" /></div>
+          <div class="field">
+            <label>وضعیت انتشار</label>
+            <select id="pf-published"><option value="true">منتشرشده</option><option value="false">پیش‌نویس</option></select>
+          </div>
+          <div class="field"><label>رنگ تاکیدی</label><input id="pf-accent" type="color" value="#d9b673" /></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4 class="form-section-title">فارسی</h4>
+        <div class="form-grid">
+          <div class="field"><label>عنوان</label><input id="pf-title-fa" required /></div>
+          <div class="field"><label>دسته‌بندی</label><input id="pf-cat-fa" /></div>
+          <div class="field full"><label>خلاصه</label><input id="pf-summary-fa" /></div>
+          <div class="field full"><label>توضیح کامل</label><textarea id="pf-desc-fa" rows="3"></textarea></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h4 class="form-section-title">English</h4>
+        <div class="form-grid">
+          <div class="field"><label>Title</label><input id="pf-title-en" required dir="ltr" /></div>
+          <div class="field"><label>Category</label><input id="pf-cat-en" dir="ltr" /></div>
+          <div class="field full"><label>Summary</label><input id="pf-summary-en" dir="ltr" /></div>
+          <div class="field full"><label>Full description</label><textarea id="pf-desc-en" rows="3" dir="ltr"></textarea></div>
+        </div>
+      </div>
+
+      <p class="form-msg error" id="projectFormError"></p>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" type="submit">
+          <span class="btn-label">ذخیره پروژه</span>
+          <span class="spinner" hidden></span>
+        </button>
+        <button class="btn btn-ghost" type="button" id="deleteProjectBtn" hidden>حذف پروژه</button>
       </div>
     </form>
-
-    <table>
-      <thead><tr><th>عنوان</th><th>slug</th><th>وضعیت</th><th></th></tr></thead>
-      <tbody id="projectsTableBody"></tbody>
-    </table>
-  </section>
-
-  <!-- MESSAGES -->
-  <section class="admin-panel" id="panel-messages">
-    <table>
-      <thead><tr><th>نام</th><th>ایمیل</th><th>پیام</th><th>تاریخ</th><th></th></tr></thead>
-      <tbody id="messagesTableBody"></tbody>
-    </table>
-  </section>
+  </div>
 </div>
+
+<!-- ===================== مودال کتابخانه رسانه (انتخاب) ===================== -->
+<div class="modal-overlay" id="libraryModalOverlay" hidden>
+  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="libraryModalTitle">
+    <div class="modal-head">
+      <h3 id="libraryModalTitle">انتخاب از رسانه‌های قبلی</h3>
+      <button class="modal-close" id="closeLibraryModal" type="button" aria-label="بستن">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="empty-state" id="libraryEmpty" hidden><p>هنوز فایلی آپلود نشده.</p></div>
+      <div class="media-grid" id="libraryGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ورودی مخفی آپلود مستقیم رسانه‌ها ===================== -->
+<input type="file" id="mediaUploadInput" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/quicktime" hidden />
+
+<!-- ===================== toast ===================== -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
 <script src="/assets/admin.js" defer></script>
 </body>

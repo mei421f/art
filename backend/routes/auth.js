@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const pool = require('../db/pool');
+const adminAuth = require('../middleware/adminAuth');
 
 const router = express.Router();
 
@@ -30,6 +31,13 @@ router.post('/login', async (req, res) => {
     console.error('خطا در ورود:', err);
     res.status(500).json({ error: 'خطای سرور در فرآیند ورود.' });
   }
+});
+
+// GET /api/admin/status — وضعیت اتصالات جانبی پنل (مثل تلگرام) — فقط ادمین
+router.get('/status', adminAuth, (req, res) => {
+  res.json({
+    telegramConfigured: !!(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID),
+  });
 });
 
 module.exports = router;

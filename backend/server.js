@@ -9,6 +9,7 @@ const seed = require('./db/seed');
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
 const contactRoutes = require('./routes/contact');
+const uploadRoutes = require('./routes/uploads');
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,7 @@ app.get('/api/health', (req, res) => res.json({ ok: true, service: 'artosphere' 
 app.use('/api/admin', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 // فرانت استاتیک
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');

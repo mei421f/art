@@ -642,12 +642,14 @@ section[id], #top { scroll-margin-top: var(--header-h); }
   overflow: hidden;
   background: var(--color-bg-raised);
 }
-.work-media img {
+.work-media img,
+.work-media video {
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 900ms var(--ease);
 }
-.work-item:hover .work-media img { transform: scale(1.06); }
+.work-item:hover .work-media img,
+.work-item:hover .work-media video { transform: scale(1.06); }
 
 .work-copy {
   padding: clamp(24px, 3vw, 34px);
@@ -853,6 +855,10 @@ section[id], #top { scroll-margin-top: var(--header-h); }
   font-weight: 700;
   font-size: 20px;
   margin-bottom: 6px;
+}
+.team-avatar-photo {
+  object-fit: cover;
+  object-position: center 25%;
 }
 .team-name { font-size: 1.1rem; }
 .team-role { color: var(--color-muted); font-size: 0.9rem; font-family: var(--font-mono); }

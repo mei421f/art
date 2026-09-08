@@ -7,7 +7,7 @@ const router = express.Router();
 const PUBLIC_FIELDS = `
   id, slug, title_fa, title_en, category_fa, category_en, year,
   summary_fa, summary_en, description_fa, description_en,
-  cover_image, accent_color, sort_order
+  cover_image, cover_type, accent_color, sort_order
 `;
 
 // GET /api/projects — لیست عمومی پروژه‌های منتشرشده
@@ -58,13 +58,13 @@ router.post('/', adminAuth, async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO projects
         (slug, title_fa, title_en, category_fa, category_en, year, summary_fa, summary_en,
-         description_fa, description_en, cover_image, accent_color, sort_order, is_published)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
+         description_fa, description_en, cover_image, cover_type, accent_color, sort_order, is_published)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
        RETURNING *`,
       [
         p.slug, p.title_fa, p.title_en, p.category_fa || '', p.category_en || '', p.year || '',
         p.summary_fa || '', p.summary_en || '', p.description_fa || '', p.description_en || '',
-        p.cover_image || '', p.accent_color || '#101010', p.sort_order || 0,
+        p.cover_image || '', p.cover_type === 'video' ? 'video' : 'image', p.accent_color || '#101010', p.sort_order || 0,
         p.is_published !== undefined ? p.is_published : true,
       ]
     );
@@ -84,12 +84,12 @@ router.put('/:id', adminAuth, async (req, res) => {
       `UPDATE projects SET
         title_fa=$1, title_en=$2, category_fa=$3, category_en=$4, year=$5,
         summary_fa=$6, summary_en=$7, description_fa=$8, description_en=$9,
-        cover_image=$10, accent_color=$11, sort_order=$12, is_published=$13
-       WHERE id=$14 RETURNING *`,
+        cover_image=$10, cover_type=$11, accent_color=$12, sort_order=$13, is_published=$14
+       WHERE id=$15 RETURNING *`,
       [
         p.title_fa, p.title_en, p.category_fa || '', p.category_en || '', p.year || '',
         p.summary_fa || '', p.summary_en || '', p.description_fa || '', p.description_en || '',
-        p.cover_image || '', p.accent_color || '#101010', p.sort_order || 0,
+        p.cover_image || '', p.cover_type === 'video' ? 'video' : 'image', p.accent_color || '#101010', p.sort_order || 0,
         p.is_published !== undefined ? p.is_published : true, req.params.id,
       ]
     );
